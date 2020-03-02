@@ -18,7 +18,7 @@ export async function getIncident(id: string): Promise<Incident> {
 }
 
 export async function createIncident(
-  params: Partial<Incident>
+  params: Pick<Incident, "description">
 ): Promise<Incident> {
   const incident = transform(Incident, params);
   await repo().save(incident);
