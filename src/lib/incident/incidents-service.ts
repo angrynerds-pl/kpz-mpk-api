@@ -7,7 +7,7 @@ function repo(): Repository<Incident> {
   return getRepository(Incident);
 }
 
-export function listIncidents(): Promise<readonly Incident[]> {
+export function listIncidents(): Promise<Incident[]> {
   return repo().find();
 }
 
