@@ -10,7 +10,7 @@ import { Expose } from "class-transformer";
 @Entity({ name: "incidents" })
 export class Incident {
   @PrimaryGeneratedColumn({ type: "bigint" })
-  id!: number;
+  id!: string;
 
   @Column({ type: "text" })
   @Expose()
