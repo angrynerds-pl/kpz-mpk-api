@@ -8,6 +8,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/quotes": "off",
     "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-use-before-define": ["warn", { functions: false }],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-function-return-type": [

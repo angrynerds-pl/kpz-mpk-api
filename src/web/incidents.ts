@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerRoute } from "@hapi/hapi";
 import { string, object } from "@hapi/joi";
 import {
