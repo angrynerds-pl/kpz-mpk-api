@@ -1,0 +1,42 @@
+{
+  "name": "kpz-mpk-api",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "repository": "git@github.com:angrynerds-pl/kpz-mpk-api.git",
+  "author": "kaaboaye <kaaboaye@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsc -w & DEVELOPMENT=true DATABASE_SYNC=true nodemon --watch 'build/**/*.js' --exec node --inspect build",
+    "format": "prettier \"src/**/*.{js,jsx,ts,tsx}\" --write",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src"
+  },
+  "devDependencies": {
+    "@types/hapi__hapi": "^19.0.2",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^7.0.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@hapi/boom": "^9.0.0",
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/inert": "^6.0.1",
+    "@hapi/joi": "^17.1.0",
+    "@hapi/vision": "^6.0.0",
+    "blipp": "^4.0.1",
+    "class-transformer": "^0.2.3",
+    "hapi-swagger": "^12.1.1",
+    "pg": "^7.18.2",
+    "reflect-metadata": "^0.1.13",
+    "relish": "^3.0.0",
+    "typeorm": "^0.2.24"
+  },
+  "engines": {
+    "node": "13.9.0"
+  }
+}
