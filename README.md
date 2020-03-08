@@ -32,7 +32,7 @@ npm i -g yarn
 # Install node deps
 yarn --ignore-platform
 
-# Create the database or just use Kitematic lol
+# Create the database via CLI or just use Kitematic lol
 # docker run --name kpz_mpk_api_postgres -p 5432:5432 mdillon/postgis:11
 # use kitematic https://kitematic.com/
 
