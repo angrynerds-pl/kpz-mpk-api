@@ -1,11 +1,19 @@
 # KPZ MPK API
 
-## Setup - POSIX
+## Setup
 
 What do you need?
 
+#### For POSIX
 - asdf - https://asdf-vm.com/#/core-manage-asdf-vm
+- asdf-nodejs - https://github.com/asdf-vm/asdf-nodejs
 - docker - https://www.docker.com/products/docker-desktop
+
+#### For Windows
+- Get WSL2 - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
+- Install asdf* into WSL2
+- Clone repo into WSL2
+- For database use Docker for Windows with Linux containers.
 
 
 ```sh
