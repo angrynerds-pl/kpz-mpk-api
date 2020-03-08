@@ -37,7 +37,7 @@ yarn --ignore-platform
 # use kitematic https://kitematic.com/
 
 # Create the configuration file
-export DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:6969/postgres' > .env
+echo export DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:6969/postgres' > .env
 ```
 
 ### Development
