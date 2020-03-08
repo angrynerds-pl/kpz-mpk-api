@@ -6,6 +6,8 @@
   "author": "kaaboaye <kaaboaye@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node build",
+    "build": "tsc",
     "dev": "tsc -w & DEVELOPMENT=true DATABASE_SYNC=true nodemon --watch 'build/**/*.js' --exec node --inspect build",
     "format": "prettier \"src/**/*.{js,jsx,ts,tsx}\" --write",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src"
