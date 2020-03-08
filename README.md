@@ -36,8 +36,8 @@ yarn --ignore-platform
 # docker run --name kpz_mpk_api_postgres -p 5432:5432 mdillon/postgis:11
 # use kitematic https://kitematic.com/
 
-# Create the configuration file
-echo export DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:6969/postgres' > .env
+# Create the configuration file. Change XXXX to the port on which your database is running.
+echo export DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:XXXX/postgres' > .env
 ```
 
 ### Development
