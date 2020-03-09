@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "13.9.0"
+
+script:
+  - yarn lint --max-warnings 0
+  - yarn build
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
