@@ -6,6 +6,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { Expose } from "class-transformer";
+import { Point } from "geojson";
 
 export enum IncidentType {
   Else,
@@ -15,11 +16,6 @@ export enum IncidentType {
   TrackDamage,
   NoPassage
 }
-
-// export interface Point {
-//   lat: string;
-//   lon: string;
-// }
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -40,8 +36,14 @@ export class Incident {
   })
   type!: IncidentType;
 
-  // @Column({ type: "point" })
-  // location!: Point;
+  @Column({
+    type: "point",
+    transformer: {
+      from: coordinates => coordinates,
+      to: coordinates => `${coordinates.longitude}, ${coordinates.latitude}`
+    }
+  })
+  location!: Point;
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   createdAt!: Date;
