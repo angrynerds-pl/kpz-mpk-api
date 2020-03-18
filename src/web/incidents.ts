@@ -39,7 +39,8 @@ export const incidentRoutes: readonly ServerRoute[] = [
           userId: string().required(),
           type: number()
             .required()
-            .valid(0, 1, 2, 3, 4, 5)
+            .valid(0, 1, 2, 3, 4, 5),
+          location: string().required()
         })
       }
     },
