@@ -33,7 +33,27 @@ export const incidentRoutes: readonly ServerRoute[] = [
     options: {
       tags: ["api"],
       description: "Creates incident",
-      validate: { payload: object().keys({ description: string().required() }) }
+      validate: {
+        payload: object().keys({
+          description: string().required(),
+          type: string()
+            .required()
+            .valid(
+              "else",
+              "derailment",
+              "collision",
+              "noelectricity",
+              "trackdamage",
+              "nopassage"
+            ),
+          location: object()
+            .keys({
+              longitude: string().required(),
+              latitude: string().required()
+            })
+            .required()
+        })
+      }
     },
     handler: ({ payload }) => createIncident(payload as any)
   }
