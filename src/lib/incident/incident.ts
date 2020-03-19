@@ -37,16 +37,13 @@ export class Incident {
     type: "point",
     transformer: {
       from: (location: GeoJSON.Point) => location,
-      to: (location: { latitude: string; longitude: string }) => {
-        const point: GeoJSON.Point = {
-          type: "Point",
-          coordinates: [
-            parseFloat(location.longitude),
-            parseFloat(location.latitude)
-          ]
-        };
-        return point;
-      }
+      to: (location: { latitude: string; longitude: string }) => ({
+        type: "Point",
+        coordinates: [
+          parseFloat(location.longitude),
+          parseFloat(location.latitude)
+        ]
+      })
     }
   })
   @Expose()
