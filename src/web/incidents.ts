@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerRoute } from "@hapi/hapi";
-import { string, object, number } from "@hapi/joi";
+import { string, object } from "@hapi/joi";
 import {
   listIncidents,
   createIncident,
@@ -36,11 +36,22 @@ export const incidentRoutes: readonly ServerRoute[] = [
       validate: {
         payload: object().keys({
           description: string().required(),
-          userId: string().required(),
-          type: number()
+          type: string()
             .required()
-            .valid(0, 1, 2, 3, 4, 5),
-          location: string().required()
+            .valid(
+              "else",
+              "derailment",
+              "collision",
+              "noelectricity",
+              "trackdamage",
+              "nopassage"
+            ),
+          location: object()
+            .keys({
+              longitude: string().required(),
+              latitude: string().required()
+            })
+            .required()
         })
       }
     },
