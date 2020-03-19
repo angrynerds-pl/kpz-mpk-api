@@ -6,15 +6,14 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { Expose } from "class-transformer";
-import { Point } from "geojson";
 
 export enum IncidentType {
-  Else,
-  Derailment,
-  Collision,
-  NoElectricity,
-  TrackDamage,
-  NoPassage
+  ELSE = "else",
+  DERAILMENT = "derailment",
+  COLLISION = "collision",
+  NOELECTRICITY = "noelectricity",
+  TRACKDAMAGE = "trackdamage",
+  NOPASSAGE = "nopassage"
 }
 
 @Entity({ name: "incidents" })
@@ -26,24 +25,32 @@ export class Incident {
   @Expose()
   description!: string;
 
-  @Column({ type: "bigint" })
-  userId!: string;
-
   @Column({
     type: "enum",
     enum: IncidentType,
-    default: IncidentType.Else
+    default: IncidentType.ELSE
   })
+  @Expose()
   type!: IncidentType;
 
   @Column({
     type: "point",
     transformer: {
-      from: coordinates => coordinates,
-      to: coordinates => `${coordinates.longitude}, ${coordinates.latitude}`
+      from: (location: GeoJSON.Point) => location,
+      to: (location: { latitude: string; longitude: string }) => {
+        const point: GeoJSON.Point = {
+          type: "Point",
+          coordinates: [
+            parseFloat(location.longitude),
+            parseFloat(location.latitude)
+          ]
+        };
+        return point;
+      }
     }
   })
-  location!: Point;
+  @Expose()
+  location!: GeoJSON.Point;
 
   @CreateDateColumn({ type: "timestamp with time zone" })
   createdAt!: Date;
