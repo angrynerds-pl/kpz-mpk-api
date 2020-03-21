@@ -36,9 +36,17 @@ yarn --ignore-platform
 # Create the database via CLI or just use Kitematic lol
 # docker run --name kpz_mpk_api_postgres -p 5432:5432 mdillon/postgis:11
 # use kitematic https://kitematic.com/
+```
 
-# Create the configuration file. Change XXXX to the port on which your database is running.
-echo DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:XXXX/postgres' > .env
+Then create `.env` file with the following contents.
+
+> Remember to set correct database port
+
+```env
+DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:XXXX/postgres
+JWKS_URI=https://kpz-mpk.eu.auth0.com/.well-known/jwks.json
+AUTH0_AUDIENCE=kpz-mpk-api
+AUTH0_ISSUER=https://kpz-mpk.eu.auth0.com/
 ```
 
 ### Development

@@ -6,6 +6,7 @@ import {
   createIncident,
   getIncident
 } from "../lib/incident/incidents-service";
+import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
 import { StringIntValidation } from "../helpers/string-int-validation";
 import { IncidentTypeValidation } from "../lib/incident/incident-type-validation";
@@ -37,6 +38,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
     path: "/incidents",
     options: {
       tags: ["api"],
+      auth: "auth0",
       description: "Creates incident",
       validate: {
         payload: Joi.object()
@@ -48,6 +50,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
           .label("CreateIncidentInput")
       }
     },
-    handler: ({ payload }) => createIncident(payload as any)
+    handler: ({ payload, auth: { credentials } }: AuthorizedRequest) =>
+      createIncident(credentials.customerId, payload as any)
   }
 ];
