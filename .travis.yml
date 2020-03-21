@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "13.9.0"
+  - 13.9.0
 
 script:
   - yarn lint --max-warnings 0
@@ -10,3 +10,10 @@ cache:
   yarn: true
   directories:
     - node_modules
+
+deploy:
+  on: heroku
+  provider: heroku
+  app: kpz-mpk-api
+  api_key:
+    secure: 6dys7vIOuhi6rnFlwwwvrAzvNAryyYTITOzsmv/V9QJFRSHM6R6i8lg0k72C9VssQKDUIQ9drSKAocm7F/LboAd7/iE8DTa/46rIG6nR9UdXlgf5C3T6J+psWNcx6EJq6IFcnx2J6XQhj+F7Uzl9+5zOP89d2i8orbhBpRC95czFZX9ru6YrjI/MoN4bCW2e9c05GU9E1pfsw78jvapJjiKOKhdLq8lJV2CNh0liOTG+6viMJTGNqxdYOL8pP8Nd7Xer4oopwf0mj1FpmISNVD7j7LnyoHVZ++qXsV+2zRhhfGbJkcg4pvBk35P0IqQ0EAVYiWL1xWyUQ0yDFELNQIgjzG9bXUiML7u8Q/ErmbcohJvZYdTCoIr7vCZBnOgBOkSZeiM1djaOin0J9AOiwjI2tS2b1do4tosFPdJnxP6QBARTJ8TPhbFc0e633peVxYui8J5c4l8z+zs1s+JbcYkV5o+NSUQcvm78Ln4PyR7f47vwggqrRgeAZROSbnxdrAW8nr2UBT1pIKlev4o8Bs5kp1/Nu6DUdrUu+QMjbsD4VFrOMMI6tM+3LTHP+r86US79A8Lrom1YFmmZv921+tAjy+wMd4oFwirL5jJAF7K2hNfm/IEkkDtDQ4BlALk88WnY1/bxXG/gYaEr7+ooTVqtZUJOD4Wqr3Go8IkNLI0=
