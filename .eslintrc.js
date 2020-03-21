@@ -29,6 +29,9 @@ module.exports = {
     "import/prefer-default-export": "off",
     "import/no-default-export": "warn",
 
+    // typeorm relies on this
+    "import/no-cycle": "off",
+
     "no-console": "error",
 
     "prettier/prettier": "warn"
