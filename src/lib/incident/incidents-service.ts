@@ -26,5 +26,10 @@ export async function createIncident(
   incident.creatorId = creatorId;
 
   await repo().save(incident);
+
+  // hide creatorId from the response
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  incident.creatorId = undefined as any;
+
   return incident;
 }
