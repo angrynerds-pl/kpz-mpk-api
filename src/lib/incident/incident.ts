@@ -8,15 +8,7 @@ import {
 import { Expose } from "class-transformer";
 import { Point } from "../point/point";
 import { pointTransformer } from "../point/point-transformer";
-
-export enum IncidentType {
-  ELSE = "else",
-  DERAILMENT = "derailment",
-  COLLISION = "collision",
-  NOELECTRICITY = "noelectricity",
-  TRACKDAMAGE = "trackdamage",
-  NOPASSAGE = "nopassage"
-}
+import { IncidentType } from "./incident-type";
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -29,8 +21,7 @@ export class Incident {
 
   @Column({
     type: "enum",
-    enum: IncidentType,
-    default: IncidentType.ELSE
+    enum: IncidentType
   })
   @Expose()
   type!: IncidentType;
@@ -42,9 +33,9 @@ export class Incident {
   @Expose()
   location!: Point;
 
-  @CreateDateColumn({ type: "timestamp with time zone" })
+  @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
   createdAt!: Date;
 
-  @UpdateDateColumn({ type: "timestamp with time zone" })
+  @UpdateDateColumn({ name: "updated_at", type: "timestamp with time zone" })
   updatedAt!: Date;
 }
