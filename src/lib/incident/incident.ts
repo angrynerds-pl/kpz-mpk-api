@@ -6,9 +6,9 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { Expose } from "class-transformer";
-import { Point } from "../point/point";
-import { pointTransformer } from "../point/point-transformer";
 import { IncidentType } from "./incident-type";
+import { GeoPointTransformer } from "../geo-point/geo-point-transformer";
+import { GeoPoint } from "../geo-point/geo-point";
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -28,10 +28,10 @@ export class Incident {
 
   @Column({
     type: "point",
-    transformer: pointTransformer
+    transformer: GeoPointTransformer
   })
   @Expose()
-  location!: Point;
+  location!: GeoPoint;
 
   @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
   createdAt!: Date;
