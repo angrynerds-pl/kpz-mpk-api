@@ -1,5 +1,5 @@
 export enum IncidentType {
-  Else = "else",
+  Other = "other",
   Derailment = "derailment",
   Collision = "collision",
   NoElectricity = "no_electricity",
