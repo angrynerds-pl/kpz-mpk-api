@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerRoute } from "@hapi/hapi";
-import { string, object } from "@hapi/joi";
+import Joi from "@hapi/joi";
 import {
   listIncidents,
   createIncident,
@@ -23,7 +23,9 @@ export const incidentRoutes: readonly ServerRoute[] = [
     options: {
       tags: ["api"],
       description: "Gets incident",
-      validate: { params: object().keys({ id: string().regex(/^\d+$/) }) }
+      validate: {
+        params: Joi.object().keys({ id: Joi.string().regex(/^\d+$/) })
+      }
     },
     handler: ({ params }) => getIncident(params.id)
   },
@@ -34,9 +36,9 @@ export const incidentRoutes: readonly ServerRoute[] = [
       tags: ["api"],
       description: "Creates incident",
       validate: {
-        payload: object().keys({
-          description: string().required(),
-          type: string()
+        payload: Joi.object().keys({
+          description: Joi.string().required(),
+          type: Joi.string()
             .required()
             .valid(
               "else",
@@ -46,10 +48,10 @@ export const incidentRoutes: readonly ServerRoute[] = [
               "trackdamage",
               "nopassage"
             ),
-          location: object()
+          location: Joi.object()
             .keys({
-              longitude: string().required(),
-              latitude: string().required()
+              longitude: Joi.number().required(),
+              latitude: Joi.number().required()
             })
             .required()
         })
