@@ -1,6 +1,6 @@
 import { Repository, getRepository } from "typeorm";
 import { badImplementation } from "@hapi/boom";
-import { Customer } from "./custoner";
+import { Customer } from "./customer";
 
 function repo(): Repository<Customer> {
   return getRepository(Customer);

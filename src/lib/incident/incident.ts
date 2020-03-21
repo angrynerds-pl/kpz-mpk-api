@@ -11,7 +11,7 @@ import { Expose } from "class-transformer";
 import { IncidentType } from "./incident-type";
 import { GeoPointTransformer } from "../geo-point/geo-point-transformer";
 import { GeoPoint } from "../geo-point/geo-point";
-import { Customer } from "../customer/custoner";
+import { Customer } from "../customer/customer";
 
 @Entity({ name: "incidents" })
 export class Incident {
