@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 export const { DATABASE_URL } = process.env;
 
 export const HTTP_PORT = Number.parseInt(process.env.PORT ?? "3000", 10);

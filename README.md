@@ -5,16 +5,17 @@
 What do you need?
 
 #### For POSIX
+
 - asdf - https://asdf-vm.com/#/core-manage-asdf-vm
 - asdf-nodejs - https://github.com/asdf-vm/asdf-nodejs
 - docker - https://www.docker.com/products/docker-desktop
 
 #### For Windows
+
 - Get WSL2 - https://docs.microsoft.com/en-us/windows/wsl/wsl2-install
-- Install asdf* into WSL2
+- Install asdf\* into WSL2
 - Clone repo into WSL2
 - For database use Docker for Windows with Linux containers.
-
 
 ```sh
 # Clone the repo
@@ -37,14 +38,14 @@ yarn --ignore-platform
 # use kitematic https://kitematic.com/
 
 # Create the configuration file. Change XXXX to the port on which your database is running.
-echo export DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:XXXX/postgres' > .env
+echo DATABASE_URL='postgresql://postgres:mysecretpassword@localhost:XXXX/postgres' > .env
 ```
 
 ### Development
 
 ```sh
-# Load the config
-source .env
+# Start a compiler, it will automatically recompile your code
+yarn watch
 
 # Run the application in development mode
 yarn dev
