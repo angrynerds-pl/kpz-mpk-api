@@ -12,7 +12,7 @@ import {
 } from "../config";
 import { routes } from "../web/routes";
 import { auth0ToCustomerId } from "../lib/customer/customers-service";
-import { AuthorizedCredentials } from "./request";
+import { AuthorizedCredentials } from "./authorized-request";
 
 export async function startServer(): Promise<void> {
   const server = new Server({

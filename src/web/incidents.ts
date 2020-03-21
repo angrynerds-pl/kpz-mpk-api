@@ -6,7 +6,7 @@ import {
   createIncident,
   getIncident
 } from "../lib/incident/incidents-service";
-import { AuthorizedRequest } from "../core/request";
+import { AuthorizedRequest } from "../core/authorized-request";
 
 export const incidentRoutes: readonly ServerRoute[] = [
   {
