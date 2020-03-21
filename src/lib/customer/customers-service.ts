@@ -1,10 +1,6 @@
-import { Repository, getRepository } from "typeorm";
-import { badImplementation } from "@hapi/boom";
+import { getConnection } from "typeorm";
 import { Customer } from "./customer";
-
-function repo(): Repository<Customer> {
-  return getRepository(Customer);
-}
+import { transform } from "../../helpers/transform";
 
 const customerIdCache = new Map<string, string>();
 
@@ -15,21 +11,17 @@ export async function auth0ToCustomerId(auth0Id: string): Promise<string> {
     return cacheResult;
   }
 
-  const result = await repo()
-    .createQueryBuilder()
-    .insert()
-    .values({ auth0Id })
-    // it has to be DO UPDATE instead DO NOTHING because postgres
-    // won't return id in that case
-    .onConflict("(auth0_id) DO UPDATE SET auth0_id = excluded.auth0_id")
-    .returning(["id"])
-    .execute();
+  const customerId = await getConnection().transaction(async conn => {
+    const transaction = conn.getRepository(Customer);
+    const existingCustomer = await transaction.findOne({ where: { auth0Id } });
 
-  if (result.generatedMaps.length !== 1) {
-    throw badImplementation();
-  }
+    if (existingCustomer) return existingCustomer.id;
 
-  const customerId = result.generatedMaps[0].id;
+    const newCustomer = transform(Customer, { auth0Id });
+    await transaction.save(newCustomer);
+
+    return newCustomer.id;
+  });
 
   customerIdCache.set(auth0Id, customerId);
 
