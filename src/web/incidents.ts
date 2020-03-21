@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerRoute } from "@hapi/hapi";
-import { string, object } from "@hapi/joi";
+import Joi from "@hapi/joi";
 import {
   listIncidents,
   createIncident,
   getIncident
 } from "../lib/incident/incidents-service";
+import { AuthorizedRequest } from "../core/authorized-request";
+import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
+import { StringIntValidation } from "../helpers/string-int-validation";
+import { IncidentTypeValidation } from "../lib/incident/incident-type-validation";
 
 export const incidentRoutes: readonly ServerRoute[] = [
   {
@@ -23,7 +27,9 @@ export const incidentRoutes: readonly ServerRoute[] = [
     options: {
       tags: ["api"],
       description: "Gets incident",
-      validate: { params: object().keys({ id: string().regex(/^\d+$/) }) }
+      validate: {
+        params: Joi.object().keys({ id: StringIntValidation() })
+      }
     },
     handler: ({ params }) => getIncident(params.id)
   },
@@ -32,29 +38,19 @@ export const incidentRoutes: readonly ServerRoute[] = [
     path: "/incidents",
     options: {
       tags: ["api"],
+      auth: "auth0",
       description: "Creates incident",
       validate: {
-        payload: object().keys({
-          description: string().required(),
-          type: string()
-            .required()
-            .valid(
-              "else",
-              "derailment",
-              "collision",
-              "noelectricity",
-              "trackdamage",
-              "nopassage"
-            ),
-          location: object()
-            .keys({
-              longitude: string().required(),
-              latitude: string().required()
-            })
-            .required()
-        })
+        payload: Joi.object()
+          .keys({
+            description: Joi.string().required(),
+            type: IncidentTypeValidation().required(),
+            location: GeoPointValidation().required()
+          })
+          .label("CreateIncidentInput")
       }
     },
-    handler: ({ payload }) => createIncident(payload as any)
+    handler: ({ payload, auth: { credentials } }: AuthorizedRequest) =>
+      createIncident(credentials.customerId, payload as any)
   }
 ];
