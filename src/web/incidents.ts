@@ -7,6 +7,9 @@ import {
   getIncident
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
+import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
+import { StringIntValidation } from "../helpers/string-int-validation";
+import { IncidentTypeValidation } from "../lib/incident/incident-type-validation";
 
 export const incidentRoutes: readonly ServerRoute[] = [
   {
@@ -25,7 +28,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
       tags: ["api"],
       description: "Gets incident",
       validate: {
-        params: Joi.object().keys({ id: Joi.string().regex(/^\d+$/) })
+        params: Joi.object().keys({ id: StringIntValidation() })
       }
     },
     handler: ({ params }) => getIncident(params.id)
@@ -38,25 +41,13 @@ export const incidentRoutes: readonly ServerRoute[] = [
       auth: "auth0",
       description: "Creates incident",
       validate: {
-        payload: Joi.object().keys({
-          description: Joi.string().required(),
-          type: Joi.string()
-            .required()
-            .valid(
-              "else",
-              "derailment",
-              "collision",
-              "noelectricity",
-              "trackdamage",
-              "nopassage"
-            ),
-          location: Joi.object()
-            .keys({
-              longitude: Joi.number().required(),
-              latitude: Joi.number().required()
-            })
-            .required()
-        })
+        payload: Joi.object()
+          .keys({
+            description: Joi.string().required(),
+            type: IncidentTypeValidation().required(),
+            location: GeoPointValidation().required()
+          })
+          .label("CreateIncidentInput")
       }
     },
     handler: ({ payload, auth: { credentials } }: AuthorizedRequest) =>
