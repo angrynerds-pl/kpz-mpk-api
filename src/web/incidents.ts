@@ -6,6 +6,7 @@ import {
   createIncident,
   getIncident
 } from "../lib/incident/incidents-service";
+import { AuthorizedRequest } from "../core/request";
 
 export const incidentRoutes: readonly ServerRoute[] = [
   {
@@ -34,6 +35,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
     path: "/incidents",
     options: {
       tags: ["api"],
+      auth: "auth0",
       description: "Creates incident",
       validate: {
         payload: Joi.object().keys({
@@ -57,6 +59,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
         })
       }
     },
-    handler: ({ payload }) => createIncident(payload as any)
+    handler: ({ payload, auth: { credentials } }: AuthorizedRequest) =>
+      createIncident(credentials.customerId, payload as any)
   }
 ];

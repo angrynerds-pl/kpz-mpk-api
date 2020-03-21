@@ -3,17 +3,31 @@ import {
   PrimaryGeneratedColumn,
   Entity,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn
 } from "typeorm";
 import { Expose } from "class-transformer";
 import { IncidentType } from "./incident-type";
 import { GeoPointTransformer } from "../geo-point/geo-point-transformer";
 import { GeoPoint } from "../geo-point/geo-point";
+import { Customer } from "../customer/custoner";
 
 @Entity({ name: "incidents" })
 export class Incident {
   @PrimaryGeneratedColumn({ type: "bigint" })
   id!: string;
+
+  @Column({ name: "creator_id", select: false })
+  creatorId!: string;
+
+  @JoinColumn({ name: "creator_id" })
+  @ManyToOne(
+    () => Customer,
+    customer => customer.incidents,
+    {}
+  )
+  creator!: Customer;
 
   @Column({ type: "text" })
   @Expose()
