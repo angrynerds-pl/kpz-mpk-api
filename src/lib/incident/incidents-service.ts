@@ -11,14 +11,14 @@ export function listIncidents(): Promise<Incident[]> {
   return repo().find();
 }
 
-export async function getIncident(id: string): Promise<Incident> {
-  const incident = await repo().findOne(id);
+export async function getIncident(id: bigint): Promise<Incident> {
+  const incident = await repo().findOne(id.toString());
   if (!incident) throw notFound("incident_not_found");
   return incident;
 }
 
 export async function createIncident(
-  creatorId: string,
+  creatorId: bigint,
   params: Partial<Incident>
 ): Promise<Incident> {
   const incident = transform(Incident, params);

@@ -16,10 +16,10 @@ import { Customer } from "../customer/customer";
 @Entity({ name: "incidents" })
 export class Incident {
   @PrimaryGeneratedColumn({ type: "bigint" })
-  id!: string;
+  id!: bigint;
 
   @Column({ name: "creator_id", select: false })
-  creatorId!: string;
+  creatorId!: bigint;
 
   @JoinColumn({ name: "creator_id" })
   @ManyToOne(

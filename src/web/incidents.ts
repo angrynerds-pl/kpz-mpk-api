@@ -8,7 +8,7 @@ import {
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
-import { StringIntValidation } from "../helpers/string-int-validation";
+import { BigIntValidation } from "../helpers/bigint-validation";
 import { IncidentTypeValidation } from "../lib/incident/incident-type-validation";
 
 export const incidentRoutes: readonly ServerRoute[] = [
@@ -28,10 +28,10 @@ export const incidentRoutes: readonly ServerRoute[] = [
       tags: ["api"],
       description: "Gets incident",
       validate: {
-        params: Joi.object().keys({ id: StringIntValidation() })
+        params: { id: BigIntValidation() }
       }
     },
-    handler: ({ params }) => getIncident(params.id)
+    handler: ({ params }) => getIncident(params.id as any)
   },
   {
     method: "post",
