@@ -2,6 +2,7 @@
 /* eslint-disable global-require */
 import { Server } from "@hapi/hapi";
 import jwksRsa from "jwks-rsa";
+import Joi from "@hapi/joi";
 import {
   HTTP_PORT,
   HTTP_HOST,
@@ -30,6 +31,8 @@ export async function startServer(): Promise<void> {
   await server.register(require("@hapi/vision"));
   await server.register(require("@hapi/inert"));
   await server.register(require("hapi-auth-jwt2"));
+
+  server.validator(Joi);
 
   await server.register({
     plugin: require("hapi-swagger"),

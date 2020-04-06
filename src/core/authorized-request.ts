@@ -1,7 +1,7 @@
 import { Request, RequestAuth, AuthCredentials } from "@hapi/hapi";
 
 export interface AuthorizedCredentials extends AuthCredentials {
-  customerId: string;
+  customerId: bigint;
 }
 
 interface AuthorizedAuth extends RequestAuth {

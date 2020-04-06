@@ -6,9 +6,9 @@ function repo(): Repository<Customer> {
   return getRepository(Customer);
 }
 
-const customerIdCache = new Map<string, string>();
+const customerIdCache = new Map<string, bigint>();
 
-export async function auth0ToCustomerId(auth0Id: string): Promise<string> {
+export async function auth0ToCustomerId(auth0Id: string): Promise<bigint> {
   const cacheResult = customerIdCache.get(auth0Id);
 
   if (cacheResult) {
