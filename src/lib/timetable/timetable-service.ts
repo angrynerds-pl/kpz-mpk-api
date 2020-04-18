@@ -8,7 +8,7 @@ import { GeoPoint } from "../geo-point/geo-point";
 // it's a timetable cache
 // it stores lazy parsed timetable files
 const timetable = new Map(
-  fs.readdirSync("assets/timetable").map(filename => {
+  fs.readdirSync("assets/timetable").map((filename) => {
     const file = filename.split(".", 2)[0];
 
     return [
@@ -16,7 +16,7 @@ const timetable = new Map(
       [null, semaphoreFactory()] as [
         {}[] | null,
         ReturnType<typeof semaphoreFactory>
-      ]
+      ],
     ];
   })
 );
@@ -53,8 +53,8 @@ export function readTimetableFile(filename: string): Promise<{}[]> {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const freshCache = timetable.get(filename)!;
       if (freshCache[0]) {
-        semaphore.leave();
         resolve(freshCache[0]);
+        semaphore.leave();
         return;
       }
 
@@ -93,11 +93,11 @@ export async function findRoutesAndTripesNearby(
   const routesAndTrips = await queryRoutesAndTrips(point);
   const routesMap = new Map<string, RouteWithTripsAndDistance>();
 
-  routesAndTrips.forEach(trip => {
+  routesAndTrips.forEach((trip) => {
     const thisTrip = {
       tripHeadsign: trip.tripHeadsign,
       tripIds: trip.tripIds,
-      distance: trip.distance
+      distance: trip.distance,
     };
 
     const route = routesMap.get(trip.routeId);
@@ -111,7 +111,7 @@ export async function findRoutesAndTripesNearby(
     const newRoute: RouteWithTripsAndDistance = {
       routeId: trip.routeId,
       distance: trip.distance,
-      trips: [thisTrip]
+      trips: [thisTrip],
     };
 
     routesMap.set(trip.routeId, newRoute);
