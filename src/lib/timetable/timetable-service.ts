@@ -2,11 +2,14 @@ import fs from "fs";
 import csvParse from "csv-parse";
 import semaphoreFactory from "semaphore";
 import { notFound } from "@hapi/boom";
+import { GeoPoint } from "../geo-point/geo-point";
+import { TimetableRoute } from "./route";
+import { TimetableTrip } from "./trip";
 
 // it's a timetable cache
 // it stores lazy parsed timetable files
 const timetable = new Map(
-  fs.readdirSync("assets/timetable").map(filename => {
+  fs.readdirSync("assets/timetable").map((filename) => {
     const file = filename.split(".", 2)[0];
 
     return [
@@ -14,7 +17,7 @@ const timetable = new Map(
       [null, semaphoreFactory()] as [
         {}[] | null,
         ReturnType<typeof semaphoreFactory>
-      ]
+      ],
     ];
   })
 );
@@ -77,4 +80,10 @@ export function readTimetableFile(filename: string): Promise<{}[]> {
         .finally(() => semaphore.leave());
     });
   });
+}
+
+export function routesAndTripesNearby(
+  point: GeoPoint
+): { routes: TimetableRoute[]; trips: TimetableTrip[] } {
+  return { routes: [], trips: [] };
 }
