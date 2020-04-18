@@ -22,6 +22,7 @@ module.exports = {
     ],
     "@typescript-eslint/no-floating-promises": ["error"],
     "@typescript-eslint/prefer-readonly": ["error"],
+    "@typescript-eslint/indent": "off",
 
     // already handled by global-require
     "@typescript-eslint/no-var-requires": "off",

@@ -2,7 +2,7 @@ import { ServerRoute } from "@hapi/hapi";
 import Joi from "@hapi/joi";
 import {
   readTimetableFile,
-  routesAndTripesNearby,
+  findRoutesAndTripesNearby
 } from "../lib/timetable/timetable-service";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
 import { GeoPoint } from "../lib/geo-point/geo-point";
@@ -15,11 +15,11 @@ export const timeTableRoutes: ServerRoute[] = [
       tags: ["api"],
       description: "Returns Routes and Trips near provided point",
       validate: {
-        query: GeoPointValidation().required(),
-      },
+        query: GeoPointValidation().required()
+      }
     },
     handler: ({ query }) =>
-      routesAndTripesNearby((query as unknown) as GeoPoint),
+      findRoutesAndTripesNearby((query as unknown) as GeoPoint)
   },
   {
     method: "GET",
@@ -40,10 +40,10 @@ export const timeTableRoutes: ServerRoute[] = [
               "routes",
               "trips"
             )
-            .label("TimetableFiles"),
-        },
-      },
+            .label("TimetableFiles")
+        }
+      }
     },
-    handler: ({ params: { file } }) => readTimetableFile(file as string),
-  },
+    handler: ({ params: { file } }) => readTimetableFile(file as string)
+  }
 ];
