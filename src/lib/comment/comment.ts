@@ -20,14 +20,22 @@ export class Comment {
   creatorId!: bigint;
 
   @JoinColumn({ name: "creator_id" })
-  @ManyToOne(() => Customer)
+  @ManyToOne(
+    () => Customer,
+    creator => creator.comments,
+    {}
+  )
   creator!: Customer;
 
   @Column({ name: "incident_id", select: false })
-  incidentId!: Incident;
+  incidentId!: bigint;
 
   @JoinColumn({ name: "incident_id" })
-  @ManyToOne(() => Incident)
+  @ManyToOne(
+    () => Incident,
+    incident => incident.comments,
+    {}
+  )
   incident!: Incident;
 
   @Column({ type: "text" })
