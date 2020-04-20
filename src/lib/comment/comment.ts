@@ -26,7 +26,7 @@ export class Comment {
   @Column({ name: "incident_id", select: false })
   incidentId!: Incident;
 
-  @JoinColumn()
+  @JoinColumn({ name: "incident_id" })
   @ManyToOne(() => Incident)
   incident!: Incident;
 
