@@ -1,8 +1,13 @@
 import { ServerRoute, RouteOptions } from "@hapi/hapi";
 import { staticRoutes } from "./static";
 import { incidentRoutes } from "./incidents";
+import { commentRoutes } from "./comments";
 
-export const routes: ServerRoute[] = [...staticRoutes, ...incidentRoutes];
+export const routes: ServerRoute[] = [
+  ...staticRoutes,
+  ...incidentRoutes,
+  ...commentRoutes
+];
 
 /**
  * This function is passed to JSON.stringify as a second argument
