@@ -7,8 +7,7 @@ export class DefineLineLookupView1587235011629 implements MigrationInterface {
                 create materialized view line_lookup as
                 select s.line,
                       t.route_id,
-                      t.trip_headsign,
-                      array_agg(t.trip_id) trip_ids
+                      t.trip_headsign
                 from (
                       select shape_id,
                               st_makeline(
@@ -23,7 +22,7 @@ export class DefineLineLookupView1587235011629 implements MigrationInterface {
                                 ) line
                       from timetable_shape s
                     ) s
-                      left join timetable_trips t on s.shape_id = t.shape_id
+                left join timetable_trips t on s.shape_id = t.shape_id
                 where line is not null
                 group by s.line,
                         t.route_id,
