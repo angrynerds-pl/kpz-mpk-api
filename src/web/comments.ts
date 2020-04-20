@@ -39,7 +39,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
       validate: {
         payload: Joi.object()
           .keys({
-            description: Joi.string().required()
+            content: Joi.string().required()
           })
           .label("CreateCommentInput")
       }
