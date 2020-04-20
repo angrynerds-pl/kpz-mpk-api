@@ -173,7 +173,7 @@ function queryRouteType(
   return getConnection().query(
     `
     SELECT route_id "routeId",
-           route_type::text::int "type"
+           route_type "type"
     FROM timetable_route
     WHERE route_id = ANY($1)
   `,

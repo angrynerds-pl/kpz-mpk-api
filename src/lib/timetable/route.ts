@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column, Check } from "typeorm";
 
 export enum TimetableRouteType {
   Tram = 0,
@@ -30,6 +30,12 @@ export class TimetableRoute {
   @Column({ type: "text", name: "route_desc" })
   routeDesc!: string;
 
-  @Column({ type: "enum", enum: TimetableRouteType, name: "route_type" })
+  @Column({ type: "int2", name: "route_type" })
+  @Check(
+    "timetable_route__route_type__enum",
+    `route_type IN (${Object.values(TimetableRouteType)
+      .filter(value => typeof value === "number")
+      .join(", ")})`
+  )
   routeType!: TimetableRouteType;
 }
