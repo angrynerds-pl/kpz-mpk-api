@@ -3,21 +3,32 @@ import {
   PrimaryGeneratedColumn,
   Entity,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn
 } from "typeorm";
 import { Expose } from "class-transformer";
 import { Incident } from "../incident/incident";
+import { Customer } from "../customer/customer";
 
 @Entity({ name: "comments" })
 export class Comment {
   @PrimaryGeneratedColumn({ type: "bigint" })
   id!: bigint;
 
-  @Column({ name: "incident" })
-  incident!: Incident;
-
   @Column({ name: "creator_id", select: false })
   creatorId!: bigint;
+
+  @JoinColumn({ name: "creator_id" })
+  @ManyToOne(() => Customer)
+  creator!: Customer;
+
+  @Column({ name: "incident_id", select: false })
+  incidentId!: Incident;
+
+  @JoinColumn()
+  @ManyToOne(() => Incident)
+  incident!: Incident;
 
   @Column({ type: "text" })
   @Expose()
