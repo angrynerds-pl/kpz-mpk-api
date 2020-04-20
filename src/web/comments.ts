@@ -8,7 +8,7 @@ import {
 } from "../lib/comment/comments-service";
 import { BigIntValidation } from "../helpers/bigint-validation";
 
-export const incidentRoutes: readonly ServerRoute[] = [
+export const commentRoutes: readonly ServerRoute[] = [
   {
     method: "get",
     path: "/comments",
