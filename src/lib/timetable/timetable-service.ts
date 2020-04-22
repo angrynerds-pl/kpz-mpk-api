@@ -112,7 +112,7 @@ export async function findRoutesAndTripesNearby(
       routeId: trip.routeId,
       distance: trip.distance,
       trips: [thisTrip],
-      // will be filled later
+      // it's filled a couple lines below
       routeGtfsType: null
     };
 
