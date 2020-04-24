@@ -7,8 +7,12 @@ function repo(): Repository<Comment> {
   return getRepository(Comment);
 }
 
-export function listComments(): Promise<Comment[]> {
-  return repo().find();
+export async function listComments(incidentId: bigint): Promise<Comment[]> {
+  const comments = await repo().find({
+    incidentId: JSON.parse(incidentId.toString())
+  });
+  if (!comments) throw notFound("comment_not_found");
+  return comments;
 }
 
 export async function getComment(id: bigint): Promise<Comment> {
@@ -18,9 +22,20 @@ export async function getComment(id: bigint): Promise<Comment> {
 }
 
 export async function createComment(
+  creatorId: bigint,
+  incidentId: bigint,
   params: Partial<Comment>
 ): Promise<Comment> {
   const comment = transform(Comment, params);
+
+  comment.creatorId = creatorId;
+  comment.incidentId = incidentId;
+
   await repo().save(comment);
+
+  // hide creatorId from the response
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  comment.creatorId = undefined as any;
+
   return comment;
 }
