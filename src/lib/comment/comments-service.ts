@@ -9,7 +9,8 @@ function repo(): Repository<Comment> {
 
 export async function listComments(incidentId: bigint): Promise<Comment[]> {
   const comments = await repo().find({
-    incidentId: JSON.parse(incidentId.toString())
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    incidentId: incidentId.toString() as any
   });
   if (!comments) throw notFound("comment_not_found");
   return comments;
