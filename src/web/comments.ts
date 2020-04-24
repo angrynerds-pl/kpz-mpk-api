@@ -6,17 +6,21 @@ import {
   createComment,
   getComment
 } from "../lib/comment/comments-service";
+import { AuthorizedRequest } from "../core/authorized-request";
 import { BigIntValidation } from "../helpers/bigint-validation";
 
 export const commentRoutes: readonly ServerRoute[] = [
   {
     method: "get",
-    path: "/comments",
+    path: "/incidents/{incidentId}/comments",
     options: {
       tags: ["api"],
-      description: "Lists comments"
+      description: "Lists comments",
+      validate: {
+        params: { incidentId: BigIntValidation() }
+      }
     },
-    handler: listComments
+    handler: ({ params }) => listComments(params.incidentId as any)
   },
   {
     method: "get",
@@ -32,18 +36,23 @@ export const commentRoutes: readonly ServerRoute[] = [
   },
   {
     method: "post",
-    path: "/comments",
+    path: "/incidents/{incidentId}/comments",
     options: {
       tags: ["api"],
+      auth: "auth0",
       description: "Creates comment",
       validate: {
-        payload: Joi.object()
-          .keys({
-            content: Joi.string().required()
-          })
-          .label("CreateCommentInput")
+        payload: Joi.object().keys({
+          content: Joi.string().required()
+        }),
+        params: { incidentId: BigIntValidation() }
       }
     },
-    handler: ({ payload }) => createComment(payload as any)
+    handler: ({ payload, params, auth: { credentials } }: AuthorizedRequest) =>
+      createComment(
+        credentials.customerId,
+        params.incidentId as any,
+        payload as any
+      )
   }
 ];
