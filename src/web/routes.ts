@@ -1,13 +1,8 @@
 import { ServerRoute, RouteOptions } from "@hapi/hapi";
 import { staticRoutes } from "./static";
 import { incidentRoutes } from "./incidents";
-import { timeTableRoutes } from "./timetable";
 
-export const routes: ServerRoute[] = [
-  ...staticRoutes,
-  ...incidentRoutes,
-  ...timeTableRoutes
-];
+export const routes: ServerRoute[] = [...staticRoutes, ...incidentRoutes];
 
 /**
  * This function is passed to JSON.stringify as a second argument
@@ -21,12 +16,7 @@ function replacer<T>(_key: string, value: T): T | string {
   return value;
 }
 
-/* eslint-disable no-param-reassign */
 routes.forEach(route => {
-  if (route.options === undefined) {
-    route.options = {};
-  }
-
   // eslint-disable-next-line no-param-reassign
   route.options = {
     json: {
