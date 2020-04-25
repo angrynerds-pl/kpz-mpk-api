@@ -24,8 +24,7 @@ export class Incident {
   @JoinColumn({ name: "creator_id" })
   @ManyToOne(
     () => Customer,
-    customer => customer.incidents,
-    {}
+    customer => customer.incidents
   )
   creator!: Customer;
 
