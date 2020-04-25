@@ -5,14 +5,11 @@ import { DATABASE_URL, DATABASE_SYNC, DEVELOPMENT } from "../config";
 types.setTypeParser(20, BigInt);
 
 export async function createTypeORM(): Promise<void> {
-  const connection = await createConnection({
+  await createConnection({
     type: "postgres",
     url: DATABASE_URL,
     synchronize: DATABASE_SYNC,
     logging: DEVELOPMENT,
-    entities: ["build/lib/**/*.js"],
-    migrations: ["build/migrations/**/*.js"]
+    entities: ["build/**/*.js"]
   });
-
-  await connection.runMigrations();
 }
