@@ -23,7 +23,7 @@ export class Comment {
   @ManyToOne(() => Customer)
   creator!: Customer;
 
-  @Column({ name: "incident_id", select: false })
+  @Column({ name: "incident_id" })
   incidentId!: bigint;
 
   @JoinColumn({ name: "incident_id" })
