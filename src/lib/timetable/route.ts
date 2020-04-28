@@ -12,9 +12,6 @@ export class TimetableRoute {
   @Column({ type: "text", name: "route_short_name" })
   routeShortName!: string;
 
-  @Column({ type: "text", name: "route_long_name" })
-  routeLongName!: string;
-
   @Column({ type: "text", name: "route_desc" })
   routeDesc!: string;
 
