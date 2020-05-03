@@ -25,11 +25,22 @@ export async function createIncident(
 
   incident.creatorId = creatorId;
 
-  await repo().save(incident);
+  try {
+    await repo().save(incident);
 
-  // hide creatorId from the response
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  incident.creatorId = undefined as any;
+    // hide creatorId from the response
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    incident.creatorId = undefined as any;
 
-  return incident;
+    return incident;
+  } catch (error) {
+    if (
+      error.constraint.startsWith("FK_") &&
+      error.detail.startsWith("Key (route_id, trip_headsign)=")
+    ) {
+      throw notFound("route_headsign_not_found");
+    }
+
+    throw error;
+  }
 }

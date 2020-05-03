@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class EnablePostgis1587235010629 implements MigrationInterface {

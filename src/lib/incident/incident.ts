@@ -12,6 +12,7 @@ import { IncidentType } from "./incident-type";
 import { GeoPointTransformer } from "../geo-point/geo-point-transformer";
 import { GeoPoint } from "../geo-point/geo-point";
 import { Customer } from "../customer/customer";
+import { TimetableHeadsign } from "../timetable/headsign";
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -45,6 +46,24 @@ export class Incident {
   })
   @Expose()
   location!: GeoPoint;
+
+  @Column({ name: "route_id", type: "text" })
+  @Expose()
+  routeId!: string;
+
+  @Column({ name: "trip_headsign", type: "text" })
+  @Expose()
+  tripHeadsign!: string;
+
+  @ManyToOne(
+    () => TimetableHeadsign,
+    headsign => headsign.incidentAffectedHeadsigns
+  )
+  @JoinColumn([
+    { name: "route_id", referencedColumnName: "routeId" },
+    { name: "trip_headsign", referencedColumnName: "tripHeadsign" }
+  ])
+  headsign!: TimetableHeadsign;
 
   @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
   createdAt!: Date;
