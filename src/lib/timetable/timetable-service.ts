@@ -92,6 +92,11 @@ export async function findRoutesAndTripesNearby(
   point: GeoPoint
 ): Promise<RouteWithTripsAndDistance[]> {
   const routesAndTrips = await queryRoutesAndTrips(point);
+
+  if (routesAndTrips.length === 0) {
+    return [];
+  }
+
   const routesMap = new Map<string, RouteWithTripsAndDistance>();
 
   routesAndTrips.forEach(trip => {
