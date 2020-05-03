@@ -4,7 +4,7 @@ import Joi from "@hapi/joi";
 import {
   createIncident,
   getIncident,
-  listIncidents
+  listActiveIncidentsWithAffectedHeadsigns
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
@@ -19,7 +19,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
       tags: ["api"],
       description: "Lists incidents"
     },
-    handler: listIncidents
+    handler: listActiveIncidentsWithAffectedHeadsigns
   },
   {
     method: "get",
