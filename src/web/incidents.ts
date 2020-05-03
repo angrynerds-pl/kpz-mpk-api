@@ -3,8 +3,8 @@ import { ServerRoute } from "@hapi/hapi";
 import Joi from "@hapi/joi";
 import {
   createIncident,
-  getIncident,
-  listActiveIncidentsWithAffectedHeadsigns
+  listActiveIncidentsWithAffectedHeadsigns,
+  getIncidentWithAffectedHeadsigns
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
@@ -31,7 +31,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
         params: { id: BigIntValidation() }
       }
     },
-    handler: ({ params }) => getIncident(params.id as any)
+    handler: ({ params }) => getIncidentWithAffectedHeadsigns(params.id as any)
   },
   {
     method: "post",

@@ -28,11 +28,25 @@ export async function getIncident(id: bigint): Promise<Incident> {
   return incident;
 }
 
+export async function getIncidentWithAffectedHeadsigns(
+  id: bigint
+): Promise<Incident> {
+  const incident = await repo()
+    .createQueryBuilder("incident")
+    .leftJoinAndSelect("incident.affectedHeadsigns", "affectedHeadsign")
+    .where("incident.id = :id", { id: id.toString() })
+    .getOne();
+
+  if (!incident) throw notFound("incident_not_found");
+  return incident;
+}
+
 export async function createIncident(
   creatorId: bigint,
   params: Partial<Incident>
 ): Promise<Incident> {
   const incident = transform(Incident, params);
+
   incident.creatorId = creatorId;
 
   incident.affectedHeadsigns = (await queryHeadsignsOnThisTrack(
