@@ -1,11 +1,13 @@
 import { ServerRoute, RouteOptions } from "@hapi/hapi";
 import { staticRoutes } from "./static";
 import { incidentRoutes } from "./incidents";
+import { commentRoutes } from "./comments";
 import { timeTableRoutes } from "./timetable";
 
 export const routes: ServerRoute[] = [
   ...staticRoutes,
   ...incidentRoutes,
+  ...commentRoutes,
   ...timeTableRoutes
 ];
 

@@ -5,13 +5,15 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
+  OneToMany
 } from "typeorm";
 import { Expose } from "class-transformer";
 import { IncidentType } from "./incident-type";
 import { GeoPointTransformer } from "../geo-point/geo-point-transformer";
 import { GeoPoint } from "../geo-point/geo-point";
 import { Customer } from "../customer/customer";
+import { Comment } from "../comment/comment";
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -27,6 +29,12 @@ export class Incident {
     customer => customer.incidents
   )
   creator!: Customer;
+
+  @OneToMany(
+    () => Comment,
+    comment => comment.incident
+  )
+  comments!: Comment[];
 
   @Column({ type: "text" })
   @Expose()
