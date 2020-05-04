@@ -9,5 +9,7 @@ export const {
 
 export const HTTP_PORT = Number.parseInt(process.env.PORT ?? "3000", 10);
 export const HTTP_HOST = process.env.HOST ?? "localhost";
-export const DEVELOPMENT = process.env.DEVELOPMENT === "true";
+export const LOG_SQL = process.env.LOG_SQL === "true";
+export const LOG_ERRORS = process.env.LOG_ERRORS === "false";
+export const LOG_HTTP_REQUESTS = process.env.LOG_HTTP_REQUESTS === "true";
 export const DATABASE_SYNC = process.env.DATABASE_SYNC === "true";

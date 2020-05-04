@@ -3,12 +3,12 @@ module.exports = {
   extends: [
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
   ],
-  plugins: ["prettier", "@typescript-eslint"],
+  plugins: ["@typescript-eslint", "prettier"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: "./tsconfig.json"
+    project: "./tsconfig.json",
   },
   rules: {
     "@typescript-eslint/quotes": "off",
@@ -18,10 +18,11 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-function-return-type": [
       "error",
-      { allowExpressions: true }
+      { allowExpressions: true },
     ],
     "@typescript-eslint/no-floating-promises": ["error"],
     "@typescript-eslint/prefer-readonly": ["error"],
+    "@typescript-eslint/indent": "off",
 
     // already handled by global-require
     "@typescript-eslint/no-var-requires": "off",
@@ -34,6 +35,6 @@ module.exports = {
 
     "no-console": "error",
 
-    "prettier/prettier": "warn"
-  }
+    "prettier/prettier": "warn",
+  },
 };

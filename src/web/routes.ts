@@ -2,11 +2,13 @@ import { ServerRoute, RouteOptions } from "@hapi/hapi";
 import { staticRoutes } from "./static";
 import { incidentRoutes } from "./incidents";
 import { commentRoutes } from "./comments";
+import { timeTableRoutes } from "./timetable";
 
 export const routes: ServerRoute[] = [
   ...staticRoutes,
   ...incidentRoutes,
-  ...commentRoutes
+  ...commentRoutes,
+  ...timeTableRoutes
 ];
 
 /**
@@ -21,7 +23,12 @@ function replacer<T>(_key: string, value: T): T | string {
   return value;
 }
 
+/* eslint-disable no-param-reassign */
 routes.forEach(route => {
+  if (route.options === undefined) {
+    route.options = {};
+  }
+
   // eslint-disable-next-line no-param-reassign
   route.options = {
     json: {

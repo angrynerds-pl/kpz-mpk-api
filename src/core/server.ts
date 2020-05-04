@@ -6,10 +6,11 @@ import Joi from "@hapi/joi";
 import {
   HTTP_PORT,
   HTTP_HOST,
-  DEVELOPMENT,
   JWKS_URI,
   AUTH0_AUDIENCE,
-  AUTH0_ISSUER
+  AUTH0_ISSUER,
+  LOG_ERRORS,
+  LOG_HTTP_REQUESTS
 } from "../config";
 import { routes } from "../web/routes";
 import { auth0ToCustomerId } from "../lib/customer/customers-service";
@@ -19,7 +20,7 @@ export async function startServer(): Promise<void> {
   const server = new Server({
     port: HTTP_PORT,
     host: HTTP_HOST,
-    debug: DEVELOPMENT ? { request: ["*"] } : undefined,
+    debug: LOG_ERRORS ? { request: ["*"] } : undefined,
 
     routes: {
       validate: {
@@ -43,6 +44,15 @@ export async function startServer(): Promise<void> {
     plugin: require("blipp"),
     options: { showAuth: true }
   });
+
+  if (LOG_HTTP_REQUESTS) {
+    await server.register({
+      plugin: require("laabr"),
+      options: {
+        colored: true
+      }
+    });
+  }
 
   server.auth.strategy("auth0", "jwt", {
     complete: true,
