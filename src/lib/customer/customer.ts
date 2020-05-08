@@ -1,6 +1,7 @@
 import { PrimaryGeneratedColumn, Entity, Column, OneToMany } from "typeorm";
 import { Expose } from "class-transformer";
 import { Incident } from "../incident/incident";
+import { Comment } from "../comment/comment";
 
 @Entity({ name: "customers" })
 export class Customer {
@@ -16,4 +17,10 @@ export class Customer {
     incident => incident.creator
   )
   incidents!: Incident[];
+
+  @OneToMany(
+    () => Comment,
+    comment => comment.creator
+  )
+  comments!: Comment[];
 }
