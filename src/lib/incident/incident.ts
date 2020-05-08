@@ -6,13 +6,15 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
-  OneToMany
+  OneToMany,
+  Index
 } from "typeorm";
 import { Expose } from "class-transformer";
 import { IncidentType } from "./incident-type";
 import { GeoPointTransformer } from "../geo-point/geo-point-transformer";
 import { GeoPoint } from "../geo-point/geo-point";
 import { Customer } from "../customer/customer";
+import { IncidentAffectedHeadsign } from "./incident-affected-headsign";
 import { Comment } from "../comment/comment";
 
 @Entity({ name: "incidents" })
@@ -54,7 +56,23 @@ export class Incident {
   @Expose()
   location!: GeoPoint;
 
+  @Column({ name: "route_id", type: "text" })
+  @Expose()
+  routeId!: string;
+
+  @Column({ name: "trip_headsign", type: "text" })
+  @Expose()
+  tripHeadsign!: string;
+
+  @OneToMany(
+    () => IncidentAffectedHeadsign,
+    affectedHeadsign => affectedHeadsign.incident,
+    { cascade: true }
+  )
+  affectedHeadsigns!: IncidentAffectedHeadsign[];
+
   @CreateDateColumn({ name: "created_at", type: "timestamp with time zone" })
+  @Index()
   createdAt!: Date;
 
   @UpdateDateColumn({ name: "updated_at", type: "timestamp with time zone" })

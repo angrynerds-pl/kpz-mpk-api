@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class DefineLineLookupView1587235011629 implements MigrationInterface {

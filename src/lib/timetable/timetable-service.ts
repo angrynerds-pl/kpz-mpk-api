@@ -172,6 +172,45 @@ function queryRoutesAndTrips(
   );
 }
 
+export function queryHeadsignsOnThisTrack(
+  point: GeoPoint,
+  routeId: string,
+  tripHeadsign: string
+): Promise<{ routeId: string; tripHeadsign: string }[]> {
+  return getConnection().query(
+    `
+    SELECT route_id "routeId",
+           trip_headsign "tripHeadsign"
+    FROM line_lookup
+    WHERE line = (
+      WITH candidates AS (
+        SELECT *
+        FROM line_lookup
+        ORDER BY line <-> ST_SetSRID(st_MakePoint($1, $2), 4326)
+        LIMIT 200
+      )
+      SELECT line
+      FROM (
+        SELECT line,
+               route_id,
+               trip_headsign,
+               ST_Distance(
+                 ST_Transform(line, 26986),
+                 ST_Transform(ST_SetSRID(st_MakePoint($1, $2), 4326), 26986)
+               ) distance
+        FROM candidates
+      ) _
+      WHERE distance <= 50
+        AND route_id = $3
+        AND trip_headsign = $4
+      ORDER BY distance
+      LIMIT 1
+    ) 
+  `,
+    [point.longitude, point.latitude, routeId, tripHeadsign]
+  );
+}
+
 function queryRouteType(
   routeIds: string[]
 ): Promise<{ routeId: string; type: number }[]> {

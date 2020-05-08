@@ -2,9 +2,9 @@
 import { ServerRoute } from "@hapi/hapi";
 import Joi from "@hapi/joi";
 import {
-  listIncidents,
   createIncident,
-  getIncident
+  listActiveIncidentsWithAffectedHeadsigns,
+  getIncidentWithAffectedHeadsigns
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
@@ -19,7 +19,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
       tags: ["api"],
       description: "Lists incidents"
     },
-    handler: listIncidents
+    handler: listActiveIncidentsWithAffectedHeadsigns
   },
   {
     method: "get",
@@ -31,7 +31,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
         params: { id: BigIntValidation() }
       }
     },
-    handler: ({ params }) => getIncident(params.id as any)
+    handler: ({ params }) => getIncidentWithAffectedHeadsigns(params.id as any)
   },
   {
     method: "post",
@@ -45,7 +45,9 @@ export const incidentRoutes: readonly ServerRoute[] = [
           .keys({
             description: Joi.string().required(),
             type: IncidentTypeValidation().required(),
-            location: GeoPointValidation().required()
+            location: GeoPointValidation().required(),
+            routeId: Joi.string().required(),
+            tripHeadsign: Joi.string().required()
           })
           .label("CreateIncidentInput")
       }
