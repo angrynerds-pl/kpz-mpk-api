@@ -7,7 +7,6 @@ import {
   HTTP_PORT,
   HTTP_HOST,
   JWKS_URI,
-  AUTH0_AUDIENCE,
   AUTH0_ISSUER,
   LOG_ERRORS,
   LOG_HTTP_REQUESTS
@@ -76,7 +75,6 @@ export async function startServer(): Promise<void> {
     headerKey: "authorization",
     tokenType: "Bearer",
     verifyOptions: {
-      audience: AUTH0_AUDIENCE,
       issuer: AUTH0_ISSUER,
       algorithms: ["RS256"]
     }
