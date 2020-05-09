@@ -45,7 +45,6 @@ Then create `.env` file with the following contents.
 ```env
 DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:XXXX/postgres
 JWKS_URI=https://kpz-mpk.eu.auth0.com/.well-known/jwks.json
-AUTH0_AUDIENCE=kpz-mpk-api
 AUTH0_ISSUER=https://kpz-mpk.eu.auth0.com/
 ```
 
