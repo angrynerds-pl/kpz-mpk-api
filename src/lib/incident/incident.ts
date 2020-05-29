@@ -16,6 +16,7 @@ import { GeoPoint } from "../geo-point/geo-point";
 import { Customer } from "../customer/customer";
 import { IncidentAffectedHeadsign } from "./incident-affected-headsign";
 import { Comment } from "../comment/comment";
+import { Rating } from "../rating/rating";
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -37,6 +38,12 @@ export class Incident {
     comment => comment.incident
   )
   comments!: Comment[];
+
+  @OneToMany(
+    () => Rating,
+    rating => rating.incident
+  )
+  ratings!: Rating[];
 
   @Column({ type: "text" })
   @Expose()
