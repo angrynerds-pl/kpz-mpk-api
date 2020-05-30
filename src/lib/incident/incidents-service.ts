@@ -171,7 +171,6 @@ export async function getIncidentRating(
       max(created_at) "lastRatedAt"
     FROM incident_ratings
     WHERE incident_id = $1
-    GROUP BY incident_id
   `,
     [incidentId.toString()]
   );
