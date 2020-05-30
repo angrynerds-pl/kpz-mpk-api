@@ -16,6 +16,7 @@ import { GeoPoint } from "../geo-point/geo-point";
 import { Customer } from "../customer/customer";
 import { IncidentAffectedHeadsign } from "./incident-affected-headsign";
 import { Comment } from "../comment/comment";
+import { IncidentRating } from "./incident-rating";
 
 @Entity({ name: "incidents" })
 export class Incident {
@@ -31,6 +32,12 @@ export class Incident {
     customer => customer.incidents
   )
   creator!: Customer;
+
+  @OneToMany(
+    () => IncidentRating,
+    rating => rating.incident
+  )
+  ratings!: IncidentRating[];
 
   @OneToMany(
     () => Comment,
