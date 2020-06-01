@@ -75,7 +75,7 @@ export async function listIncidentAffectedHeadsignsWithGtfsType(
 
       return {
         routeId,
-        type,
+        routeGtfsType: type,
         headsigns: affectedHeadsigns.map(({ tripHeadsign }) => tripHeadsign)
       };
     }
