@@ -4,6 +4,7 @@ import semaphoreFactory from "semaphore";
 import { notFound } from "@hapi/boom";
 import { getConnection } from "typeorm";
 import { GeoPoint } from "../geo-point/geo-point";
+import { TimetableRouteType } from "./route-type";
 
 // it's a timetable cache
 // it stores lazy parsed timetable files
@@ -211,9 +212,9 @@ export function queryHeadsignsOnThisTrack(
   );
 }
 
-function queryRouteType(
+export function queryRouteType(
   routeIds: string[]
-): Promise<{ routeId: string; type: number }[]> {
+): Promise<{ routeId: string; type: TimetableRouteType }[]> {
   return getConnection().query(
     `
     SELECT route_id "routeId",

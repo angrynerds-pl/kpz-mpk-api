@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerRoute } from "@hapi/hapi";
 import Joi from "@hapi/joi";
+import { notFound } from "@hapi/boom";
 import {
   createIncident,
-  listActiveIncidentsWithAffectedHeadsigns,
-  getIncidentWithAffectedHeadsigns
+  rateIncident,
+  deleteRating,
+  getIncident,
+  listActiveIncidents,
+  listIncidentAffectedHeadsignsWithGtfsType,
+  getIncidentRating,
+  getIncidentRouteType
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
 import { BigIntValidation } from "../helpers/bigint-validation";
 import { IncidentTypeValidation } from "../lib/incident/incident-type-validation";
+import { listComments } from "../lib/comment/comments-service";
 
 export const incidentRoutes: readonly ServerRoute[] = [
   {
@@ -19,7 +26,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
       tags: ["api"],
       description: "Lists incidents"
     },
-    handler: listActiveIncidentsWithAffectedHeadsigns
+    handler: listActiveIncidents
   },
   {
     method: "get",
@@ -31,7 +38,43 @@ export const incidentRoutes: readonly ServerRoute[] = [
         params: { id: BigIntValidation() }
       }
     },
-    handler: ({ params }) => getIncidentWithAffectedHeadsigns(params.id as any)
+    handler: ({ params }) => getIncident(params.id as any)
+  },
+  {
+    method: "get",
+    path: "/incidents/{id}/view",
+    options: {
+      tags: ["api"],
+      description: "Gets incident",
+      validate: {
+        params: { id: BigIntValidation() }
+      }
+    },
+    handler: async ({ params }) => {
+      const incidentId = (params as any).id as bigint;
+
+      const [
+        incident,
+        type,
+        affectedHeadsigns,
+        comments,
+        rating
+      ] = await Promise.all([
+        getIncident(incidentId),
+        getIncidentRouteType(incidentId),
+        listIncidentAffectedHeadsignsWithGtfsType(incidentId),
+        listComments(incidentId),
+        getIncidentRating(incidentId)
+      ]);
+
+      return {
+        ...incident,
+        type,
+        affectedHeadsigns,
+        comments,
+        rating
+      };
+    }
   },
   {
     method: "post",
@@ -54,5 +97,69 @@ export const incidentRoutes: readonly ServerRoute[] = [
     },
     handler: ({ payload, auth: { credentials } }: AuthorizedRequest) =>
       createIncident(credentials.customerId, payload as any)
+  },
+  {
+    method: "post",
+    path: "/incidents/{incidentId}/rating",
+    options: {
+      tags: ["api"],
+      auth: "auth0",
+      description: "Rates incident",
+      validate: {
+        params: { incidentId: BigIntValidation() },
+        payload: Joi.object()
+          .keys({
+            rating: Joi.number()
+              .required()
+              .valid(-1, 1)
+          })
+          .label("IncidentRatingInput")
+      }
+    },
+    handler: async (
+      {
+        params: { incidentId },
+        payload,
+        auth: {
+          credentials: { customerId }
+        }
+      }: AuthorizedRequest,
+      h
+    ) => {
+      const { rating } = payload as any;
+
+      await rateIncident(incidentId as any, customerId, rating);
+
+      return h.response().code(204);
+    }
+  },
+  {
+    method: "delete",
+    path: "/incidents/{incidentId}/rating",
+    options: {
+      tags: ["api"],
+      auth: "auth0",
+      description: "Deletes rating",
+      validate: {
+        params: { incidentId: BigIntValidation() }
+      }
+    },
+    handler: async (
+      {
+        params: { incidentId },
+        auth: {
+          credentials: { customerId }
+        }
+      }: AuthorizedRequest,
+      h
+    ) => {
+      const isDeleted = await deleteRating(incidentId as any, customerId);
+
+      if (!isDeleted) {
+        throw notFound("incident_rating");
+      }
+
+      return h.response().code(204);
+    }
   }
 ];

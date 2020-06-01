@@ -7,13 +7,11 @@ function repo(): Repository<Comment> {
   return getRepository(Comment);
 }
 
-export async function listComments(incidentId: bigint): Promise<Comment[]> {
-  const comments = await repo().find({
+export function listComments(incidentId: bigint): Promise<Comment[]> {
+  return repo().find({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     incidentId: incidentId.toString() as any
   });
-  if (!comments) throw notFound("comment_not_found");
-  return comments;
 }
 
 export async function getComment(id: bigint): Promise<Comment> {
