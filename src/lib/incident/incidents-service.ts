@@ -59,7 +59,7 @@ export async function getIncidentRouteType(
 export async function listIncidentAffectedHeadsignsWithGtfsType(
   incidentId: BigInt
 ): Promise<
-  { routeId: string; type: TimetableRouteType; headsigns: string[] }[]
+  { routeId: string; routeGtfsType: TimetableRouteType; headsigns: string[] }[]
 > {
   const headsigns = await affectedHeadsignsRepo()
     .createQueryBuilder()
@@ -75,7 +75,7 @@ export async function listIncidentAffectedHeadsignsWithGtfsType(
 
       return {
         routeId,
-        type,
+        routeGtfsType: type,
         headsigns: affectedHeadsigns.map(({ tripHeadsign }) => tripHeadsign)
       };
     }
