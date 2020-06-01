@@ -55,7 +55,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
 
       const [
         incident,
-        type,
+        routeGtfsType,
         affectedHeadsigns,
         comments,
         rating
@@ -69,7 +69,7 @@ export const incidentRoutes: readonly ServerRoute[] = [
 
       return {
         ...incident,
-        type,
+        routeGtfsType,
         affectedHeadsigns,
         comments,
         rating
