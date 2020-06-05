@@ -10,7 +10,8 @@ import {
   listActiveIncidents,
   listIncidentAffectedHeadsignsWithGtfsType,
   getIncidentRating,
-  getIncidentRouteType
+  getIncidentRouteType,
+  getCustomerIncidentRating
 } from "../lib/incident/incidents-service";
 import { AuthorizedRequest } from "../core/authorized-request";
 import { GeoPointValidation } from "../lib/geo-point/geo-point-validation";
@@ -45,34 +46,50 @@ export const incidentRoutes: readonly ServerRoute[] = [
     path: "/incidents/{id}/view",
     options: {
       tags: ["api"],
+      auth: {
+        strategy: "auth0",
+        mode: "optional"
+      },
       description: "Gets incident",
       validate: {
         params: { id: BigIntValidation() }
       }
     },
-    handler: async ({ params }) => {
+    handler: async ({ params, auth: { credentials } }: AuthorizedRequest) => {
       const incidentId = (params as any).id as bigint;
+      const customerId: bigint | null = credentials?.customerId;
 
       const [
         incident,
         routeGtfsType,
         affectedHeadsigns,
         comments,
-        rating
+        maybeRating,
+        myRating
       ] = await Promise.all([
         getIncident(incidentId),
         getIncidentRouteType(incidentId),
         listIncidentAffectedHeadsignsWithGtfsType(incidentId),
         listComments(incidentId),
-        getIncidentRating(incidentId)
+        getIncidentRating(incidentId),
+        customerId
+          ? getCustomerIncidentRating(customerId, incidentId)
+          : Promise.resolve(null)
       ]);
+
+      const rating = maybeRating ?? {
+        positiveCount: 0,
+        negativeCount: 0,
+        lastRatedAt: null
+      };
 
       return {
         ...incident,
         routeGtfsType,
         affectedHeadsigns,
         comments,
-        rating
+        rating,
+        myRating
       };
     }
   },

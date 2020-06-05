@@ -1,5 +1,5 @@
 import { Repository, getRepository, getConnection } from "typeorm";
-import { notFound } from "@hapi/boom";
+import { notFound, badImplementation } from "@hapi/boom";
 import { Incident } from "./incident";
 import { transform } from "../../helpers/transform";
 import {
@@ -154,6 +154,28 @@ export async function deleteRating(
     .execute();
 
   return !!affected;
+}
+
+export async function getCustomerIncidentRating(
+  customerId: bigint,
+  incidentId: bigint
+): Promise<{ rating: number; createdAt: Date } | null> {
+  const res = await getConnection().query(
+    `
+    SELECT
+      rating "rating",
+      created_at "createdAt"
+    FROM incident_ratings
+    WHERE customer_id = $1 AND incident_id = $2
+    `,
+    [customerId, incidentId]
+  );
+
+  if (res.length > 1) {
+    throw badImplementation("ghostbusters");
+  }
+
+  return res[0] ?? null;
 }
 
 export async function getIncidentRating(
