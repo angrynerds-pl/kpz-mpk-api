@@ -133,21 +133,24 @@ export const incidentRoutes: readonly ServerRoute[] = [
           .label("IncidentRatingInput")
       }
     },
-    handler: async (
-      {
-        params: { incidentId },
-        payload,
-        auth: {
-          credentials: { customerId }
-        }
-      }: AuthorizedRequest,
-      h
-    ) => {
+    handler: async ({
+      params,
+      payload,
+      auth: {
+        credentials: { customerId }
+      }
+    }: AuthorizedRequest) => {
       const { rating } = payload as any;
+      const { incidentId } = params as any;
 
       await rateIncident(incidentId as any, customerId, rating);
 
-      return h.response().code(204);
+      const incidentRating = await getIncidentRating(incidentId);
+
+      return {
+        incidentId,
+        ...incidentRating
+      };
     }
   },
   {

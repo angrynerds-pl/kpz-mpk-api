@@ -172,7 +172,7 @@ export async function getCustomerIncidentRating(
   );
 
   if (res.length > 1) {
-    throw badImplementation("ghostbusters");
+    throw badImplementation("ghost busters");
   }
 
   return res[0] ?? null;
@@ -185,7 +185,11 @@ export async function getIncidentRating(
   negativeCount: number;
   lastRatedAt: Date;
 }> {
-  const res = await getConnection().query(
+  const res: {
+    positiveCount: number;
+    negativeCount: number;
+    lastRatedAt: Date;
+  }[] = await getConnection().query(
     `
     SELECT
       (count(*) FILTER ( WHERE rating = 1 ))::INT "positiveCount",
@@ -197,9 +201,11 @@ export async function getIncidentRating(
     [incidentId.toString()]
   );
 
-  if (!res) {
+  if (res.length === 0) {
     throw notFound("incident");
+  } else if (res.length > 1) {
+    throw badImplementation("scooby doo");
   }
 
-  return res;
+  return res[0];
 }
