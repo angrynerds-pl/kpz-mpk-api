@@ -145,15 +145,13 @@ export async function rateIncident(
 export async function deleteRating(
   incidentId: bigint,
   customerId: bigint
-): Promise<boolean> {
-  const { affected } = await ratingsRepo()
+): Promise<void> {
+  await ratingsRepo()
     .createQueryBuilder()
     .andWhere("incident_id = :incidentId", { incidentId })
     .andWhere("customer_id = :customerId", { customerId })
     .delete()
     .execute();
-
-  return !!affected;
 }
 
 export async function getCustomerIncidentRating(

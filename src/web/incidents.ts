@@ -164,22 +164,20 @@ export const incidentRoutes: readonly ServerRoute[] = [
         params: { incidentId: BigIntValidation() }
       }
     },
-    handler: async (
-      {
-        params: { incidentId },
-        auth: {
-          credentials: { customerId }
-        }
-      }: AuthorizedRequest,
-      h
-    ) => {
-      const isDeleted = await deleteRating(incidentId as any, customerId);
-
-      if (!isDeleted) {
-        throw notFound("incident_rating");
+    handler: async ({
+      params: { incidentId },
+      auth: {
+        credentials: { customerId }
       }
+    }: AuthorizedRequest) => {
+      await deleteRating(incidentId as any, customerId);
 
-      return h.response().code(204);
+      const incidentRating = await getIncidentRating(incidentId as any);
+
+      return {
+        incidentId,
+        ...incidentRating
+      };
     }
   }
 ];
