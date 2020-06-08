@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ServerRoute } from "@hapi/hapi";
 import Joi from "@hapi/joi";
-import { notFound } from "@hapi/boom";
 import {
   createIncident,
   rateIncident,
