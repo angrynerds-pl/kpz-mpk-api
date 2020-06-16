@@ -190,8 +190,8 @@ export async function getIncidentRating(
   }[] = await getConnection().query(
     `
     SELECT
-      count(*) FILTER ( WHERE rating = 1 ) "positiveCount",
-      count(*) FILTER ( WHERE rating = -1 ) "negativeCount",
+      (count(*) FILTER ( WHERE rating = 1 ))::INT "positiveCount",
+      (count(*) FILTER ( WHERE rating = -1 ))::INT "negativeCount",
       max(created_at) "lastRatedAt"
     FROM incident_ratings
     WHERE incident_id = $1
