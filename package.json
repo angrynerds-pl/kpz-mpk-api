@@ -45,7 +45,7 @@
     "reflect-metadata": "^0.1.13",
     "relish": "^3.0.0",
     "semaphore": "^1.1.0",
-    "typeorm": "^0.2.24"
+    "typeorm": "^0.2.25"
   },
   "engines": {
     "node": "13.9.0"
